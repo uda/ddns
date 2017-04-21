@@ -1,0 +1,4 @@
+
+
+class DynamicResolver(object):
+    pass

@@ -1,0 +1,65 @@
+{
+    "default": {
+        "constantly": {
+            "version": "==15.1.0",
+            "hash": "sha256:dd2fa9d6b1a51a83f0d7dd76293d734046aa176e384bf6e33b7e44880eb37c5d"
+        },
+        "zope.interface": {
+            "version": "==4.3.3",
+            "hash": "sha256:8780ef68ca8c3fe1abb30c058a59015129d6e04a6b02c2e56b9c7de6078dfa88"
+        },
+        "six": {
+            "version": "==1.10.0",
+            "hash": "sha256:0ff78c403d9bccf5a425a6d31a12aa6b47f1c21ca4dc2573a7e2f32a97335eb1"
+        },
+        "Twisted": {
+            "version": "==17.1.0",
+            "hash": "sha256:dbf211d70afe5b4442e3933ff01859533eba9f13d8b3e2e1b97dc2125e2d44dc"
+        },
+        "Automat": {
+            "version": "==0.5.0",
+            "hash": "sha256:294e91c3c52e3c2d3123230ed605e5a4b09cfc487716c9d218d118e2ef57c5c1"
+        },
+        "packaging": {
+            "version": "==16.8",
+            "hash": "sha256:99276dc6e3a7851f32027a68f1095cd3f77c148091b092ea867a351811cfe388"
+        },
+        "txredis": {
+            "version": "==2.4",
+            "hash": "sha256:15e7d0255d892c1fa72895e2e4b5745f573c715e35f8a55dfe607c697a93365b"
+        },
+        "incremental": {
+            "version": "==16.10.1",
+            "hash": "sha256:cc00a35f9e9621ddec0a5e7d17271f3f26244873c4aec67eda06f2db8302e04b"
+        },
+        "attrs": {
+            "version": "==16.3.0",
+            "hash": "sha256:c59426b15b45e39a7bc408eb6ba7e7188d9532764f873cc691199ddd975c97ef"
+        },
+        "setuptools": {
+            "version": "==35.0.0",
+            "hash": "sha256:b427014a0cf196e57727e141899c20381051233094783aa6274780a100eb65d9"
+        },
+        "pyparsing": {
+            "version": "==2.2.0",
+            "hash": "sha256:fee43f17a9c4087e7ed1605bd6df994c6173c1e977d7ade7b651292fab2bd010"
+        },
+        "appdirs": {
+            "version": "==1.4.3",
+            "hash": "sha256:d8b24664561d0d34ddfaec54636d502d7cea6e29c3eaf68f3df6180863e2166e"
+        }
+    },
+    "develop": {},
+    "_meta": {
+        "sources": [
+            {
+                "url": "https://pypi.python.org/simple",
+                "verify_ssl": true
+            }
+        ],
+        "requires": {},
+        "hash": {
+            "sha256": "82597d081525b5b9b29f82761d5c4743109a06ea3468b2adb9c7ae16556b307d"
+        }
+    }
+}
