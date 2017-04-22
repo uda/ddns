@@ -1,0 +1,7 @@
+# General
+*.pyc
+*.cache
+*.log
+
+# Specific
+ddns.ini
