@@ -42,7 +42,29 @@ def rr_set():
     if hset:
         print 'Set successful'
     else:
-        print 'Error setting record'
+        print 'Update successful'
+
+    yield conn.disconnect()
+
+
+@defer.inlineCallbacks
+def rr_get():
+    domain = args.zone.lower().strip()
+    host = args.host.lower().strip()
+    rr_type = args.type.upper().strip()
+
+    conn = yield redis.Connection(
+        host=config.get('redis', 'host'),
+        port=int(config.get('redis', 'port')),
+        dbid=int(config.get('redis', 'db'))
+    )
+
+    data = yield conn.hget(
+        'DDNS:ZONE:{}'.format(domain),
+        '{}:{}'.format(host, rr_type)
+    )
+
+    print '{}.{}.\t{}\t{}'.format(host, domain, rr_type, data)
 
     yield conn.disconnect()
 
@@ -71,6 +93,8 @@ def main():
     cmd_method = rr_set
     if args.list:
         cmd_method = rr_list
+    elif not args.data:
+        cmd_method = rr_get
     cmd_method().addCallback(lambda ignore: reactor.stop())
 
 if __name__ == '__main__':
