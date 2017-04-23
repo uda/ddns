@@ -1,3 +1,12 @@
+"""
+rr.py
+
+UDNS's DDNS cli
+
+License: MIT
+Copyright: 2017, Yehuda Deutsch <yeh@uda.co.il>
+"""
+
 from ConfigParser import ConfigParser
 from argparse import ArgumentParser
 
