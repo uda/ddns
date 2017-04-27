@@ -7,4 +7,5 @@ docker-compose = "*"
 
 [packages]
 txredisapi = "*"
+klein = "*"
 Twisted = "*"

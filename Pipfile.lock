@@ -1,65 +1,126 @@
 {
-    "default": {
-        "constantly": {
-            "version": "==15.1.0",
-            "hash": "sha256:dd2fa9d6b1a51a83f0d7dd76293d734046aa176e384bf6e33b7e44880eb37c5d"
-        },
-        "zope.interface": {
-            "version": "==4.3.3",
-            "hash": "sha256:8780ef68ca8c3fe1abb30c058a59015129d6e04a6b02c2e56b9c7de6078dfa88"
-        },
-        "six": {
-            "version": "==1.10.0",
-            "hash": "sha256:0ff78c403d9bccf5a425a6d31a12aa6b47f1c21ca4dc2573a7e2f32a97335eb1"
-        },
-        "Twisted": {
-            "version": "==17.1.0",
-            "hash": "sha256:dbf211d70afe5b4442e3933ff01859533eba9f13d8b3e2e1b97dc2125e2d44dc"
-        },
-        "Automat": {
-            "version": "==0.5.0",
-            "hash": "sha256:294e91c3c52e3c2d3123230ed605e5a4b09cfc487716c9d218d118e2ef57c5c1"
-        },
-        "packaging": {
-            "version": "==16.8",
-            "hash": "sha256:99276dc6e3a7851f32027a68f1095cd3f77c148091b092ea867a351811cfe388"
-        },
-        "txredis": {
-            "version": "==2.4",
-            "hash": "sha256:15e7d0255d892c1fa72895e2e4b5745f573c715e35f8a55dfe607c697a93365b"
-        },
-        "incremental": {
-            "version": "==16.10.1",
-            "hash": "sha256:cc00a35f9e9621ddec0a5e7d17271f3f26244873c4aec67eda06f2db8302e04b"
-        },
-        "attrs": {
-            "version": "==16.3.0",
-            "hash": "sha256:c59426b15b45e39a7bc408eb6ba7e7188d9532764f873cc691199ddd975c97ef"
-        },
-        "setuptools": {
-            "version": "==35.0.0",
-            "hash": "sha256:b427014a0cf196e57727e141899c20381051233094783aa6274780a100eb65d9"
-        },
-        "pyparsing": {
-            "version": "==2.2.0",
-            "hash": "sha256:fee43f17a9c4087e7ed1605bd6df994c6173c1e977d7ade7b651292fab2bd010"
-        },
-        "appdirs": {
-            "version": "==1.4.3",
-            "hash": "sha256:d8b24664561d0d34ddfaec54636d502d7cea6e29c3eaf68f3df6180863e2166e"
-        }
-    },
-    "develop": {},
     "_meta": {
+        "hash": {
+            "sha256": "0872ea18d42115533203276ee2453df55b72ffcd71dab5c251090b93c45a1954"
+        },
+        "requires": {},
         "sources": [
             {
                 "url": "https://pypi.python.org/simple",
                 "verify_ssl": true
             }
-        ],
-        "requires": {},
-        "hash": {
-            "sha256": "82597d081525b5b9b29f82761d5c4743109a06ea3468b2adb9c7ae16556b307d"
+        ]
+    },
+    "default": {
+        "Automat": {
+            "hash": "sha256:294e91c3c52e3c2d3123230ed605e5a4b09cfc487716c9d218d118e2ef57c5c1",
+            "version": "==0.5.0"
+        },
+        "Twisted": {
+            "hash": "sha256:dbf211d70afe5b4442e3933ff01859533eba9f13d8b3e2e1b97dc2125e2d44dc",
+            "version": "==17.1.0"
+        },
+        "Werkzeug": {
+            "hash": "sha256:918322630c58fa52b89e14c45de3ad78514e18928dac726060bb89cd647f6b83",
+            "version": "==0.12.1"
+        },
+        "appdirs": {
+            "hash": "sha256:d8b24664561d0d34ddfaec54636d502d7cea6e29c3eaf68f3df6180863e2166e",
+            "version": "==1.4.3"
+        },
+        "attrs": {
+            "hash": "sha256:c59426b15b45e39a7bc408eb6ba7e7188d9532764f873cc691199ddd975c97ef",
+            "version": "==16.3.0"
+        },
+        "constantly": {
+            "hash": "sha256:dd2fa9d6b1a51a83f0d7dd76293d734046aa176e384bf6e33b7e44880eb37c5d",
+            "version": "==15.1.0"
+        },
+        "incremental": {
+            "hash": "sha256:cc00a35f9e9621ddec0a5e7d17271f3f26244873c4aec67eda06f2db8302e04b",
+            "version": "==16.10.1"
+        },
+        "klein": {
+            "hash": "sha256:1b0ecfd867d89bd33a24650af678ee371d2c208779cac1acd0254e658c9bc8af",
+            "version": "==17.2.0"
+        },
+        "packaging": {
+            "hash": "sha256:99276dc6e3a7851f32027a68f1095cd3f77c148091b092ea867a351811cfe388",
+            "version": "==16.8"
+        },
+        "pyparsing": {
+            "hash": "sha256:fee43f17a9c4087e7ed1605bd6df994c6173c1e977d7ade7b651292fab2bd010",
+            "version": "==2.2.0"
+        },
+        "setuptools": {
+            "hash": "sha256:33a7b7910651bea57164c6c6dd66a2b1c5196c0f78ee2ff7319ce7bd031714c0",
+            "version": "==35.0.1"
+        },
+        "six": {
+            "hash": "sha256:0ff78c403d9bccf5a425a6d31a12aa6b47f1c21ca4dc2573a7e2f32a97335eb1",
+            "version": "==1.10.0"
+        },
+        "txredisapi": {
+            "hash": "sha256:725caa2dc16b5aaeedf0d92c6dbc9eedd96a85320bf82dd68835edeae4c46f2c",
+            "version": "==1.4.4"
+        },
+        "zope.interface": {
+            "hash": "sha256:bbb86f068c30f1910356ddd2a7cb69e3a4eb13c193acd93d35f6167eefda1d8d",
+            "version": "==4.4.0"
+        }
+    },
+    "develop": {
+        "PyYAML": {
+            "hash": "sha256:592766c6303207a20efc445587778322d7f73b161bd994f227adaa341ba212ab",
+            "version": "==3.12"
+        },
+        "cached-property": {
+            "hash": "sha256:8aacd79aa85a793419c76de9662d9a72ad4751eda2a8b8eb94223adc4d8d85f1",
+            "version": "==1.3.0"
+        },
+        "colorama": {
+            "hash": "sha256:37fed83335fc371eebe48f6f297081962e162c10fc54d47253c6354734eb9625",
+            "version": "==0.3.8"
+        },
+        "docker": {
+            "hash": "sha256:ef534ee4d79791539afb975e4634e3361c868e733a2b9c1f041605a9a1bbf9f5",
+            "version": "==2.2.1"
+        },
+        "docker-compose": {
+            "hash": "sha256:1fb0eadb50a80139d6f60b11382cbc43ccc1fd96af9dd44ba7637126a348f143",
+            "version": "==1.12.0"
+        },
+        "docker-pycreds": {
+            "hash": "sha256:58d2688f92de5d6f1a6ac4fe25da461232f0e0a4c1212b93b256b046b2d714a9",
+            "version": "==0.2.1"
+        },
+        "dockerpty": {
+            "hash": "sha256:69a9d69d573a0daa31bcd1c0774eeed5c15c295fe719c61aca550ed1393156ce",
+            "version": "==0.4.1"
+        },
+        "docopt": {
+            "hash": "sha256:49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491",
+            "version": "==0.6.2"
+        },
+        "jsonschema": {
+            "hash": "sha256:000e68abd33c972a5248544925a0cae7d1125f9bf6c58280d37546b946769a08",
+            "version": "==2.6.0"
+        },
+        "requests": {
+            "hash": "sha256:545c4855cd9d7c12671444326337013766f4eea6068c3f0307fb2dc2696d580e",
+            "version": "==2.11.1"
+        },
+        "six": {
+            "hash": "sha256:0ff78c403d9bccf5a425a6d31a12aa6b47f1c21ca4dc2573a7e2f32a97335eb1",
+            "version": "==1.10.0"
+        },
+        "texttable": {
+            "hash": "sha256:0be1ecd6468847fc2f3b57b6c1862d8c0ae6832c037c97db502053311eff9a99",
+            "version": "==0.8.8"
+        },
+        "websocket-client": {
+            "hash": "sha256:40ac14a0c54e14d22809a5c8d553de5a2ae45de3c60105fae53bcb281b3fe6fb",
+            "version": "==0.40.0"
         }
     }
 }
