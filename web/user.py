@@ -1,14 +1,6 @@
-def klein_routes(app):
-    """
-    :param web.klein.Klein app:
-    """
-    app.route('/')(index)
-    app.route('/<string:user>')(profile)
-
-
-def index(request):
+def user_index(request):
     return 'Hello, user!'
 
 
-def profile(request, user):
+def user_view(request, user):
     return 'Hello, {}!'.format(user)
