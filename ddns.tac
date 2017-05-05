@@ -1,7 +1,7 @@
 import txredisapi
 from twisted.application import service, internet
 from twisted.names import dns
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 
 from ddns.protocol import DDNSFactory
 
