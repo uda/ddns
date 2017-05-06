@@ -22,22 +22,6 @@ class DynamicResolver(ResolverBase):
     def lookupAddress(self, name, timeout=None):
         if isinstance(name, bytes):
             name = name.decode()
-
-        def return_record(record):
-            if record:
-                return defer.succeed([
-                    (dns.RRHeader(
-                        name=name,
-                        ttl=self.ttl,
-                        payload=dns.Record_A(record, self.ttl),
-                        auth=True
-                    ),),
-                    (),
-                    ()
-                ])
-            else:
-                return defer.fail(error.DNSNameError(name))
-
         d = defer.maybeDeferred(self._get_cached_a_record, name)
         d.addCallback(self._handle_cached_a_record, name)
         return d
