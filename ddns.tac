@@ -1,14 +1,14 @@
 import txredisapi
 from twisted.application import service, internet
 from twisted.names import dns
-from ConfigParser import ConfigParser
+from six.moves.configparser import ConfigParser
 
 from ddns.protocol import DDNSFactory
 
 
 def create_application():
     _application = service.Application('ddns')
-    _collection = service.IServiceCollection(application)
+    _collection = service.IServiceCollection(_application)
 
     config = ConfigParser()
     config.read('ddns.ini')
@@ -17,8 +17,8 @@ def create_application():
 
     redis_client = txredisapi.lazyConnectionPool(
         host=config.get('redis', 'host'),
-        port=config.get('redis', 'port'),
-        dbid=config.get('redis', 'db')
+        port=int(config.get('redis', 'port')),
+        dbid=int(config.get('redis', 'db'))
     )
 
     ddns_factory = DDNSFactory(redis_client)
