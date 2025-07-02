@@ -2,6 +2,7 @@
 *.pyc
 *.cache
 *.log
+__pycache__
 
 # Specific
-ddns.ini
+/ddns.toml

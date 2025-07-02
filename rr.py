@@ -4,108 +4,124 @@ rr.py
 UDNS's DDNS cli
 
 License: MIT
-Copyright: 2017, Yehuda Deutsch <yeh@uda.co.il>
+Copyright: 2025, Yehuda Deutsch <yeh@uda.co.il>
 """
+import enum
 
-from ConfigParser import ConfigParser
-from argparse import ArgumentParser
-
-import six
 import txredisapi as redis
+import typer
 from twisted.internet import defer, reactor
+from typing_extensions import Annotated
 
-parser = ArgumentParser('rr.py', 'Manage DDNS records')
-parser.add_argument('--config', '-c', help='A config file for DDNS settings, default: ddns.ini', default='ddns.ini')
-parser.add_argument('--zone', '-z', help='The zone (domain name) to add this record', required=True)
-parser.add_argument('--host', '-o', help='The hostname to set the RR')
-parser.add_argument('--type', '-t', help='The RR type, currently supports only A', default='A', choices=['A'])
-parser.add_argument('--data', '-d', help='The data for the RR')
-
-parser.add_argument('--list', '-l', help='Just list all records for zone', action='store_true')
-
-args = parser.parse_args()
-
-config = ConfigParser()
-config.read(args.config)
+cli = typer.Typer()
 
 
-@defer.inlineCallbacks
-def rr_set():
-    domain = args.zone.lower().strip()
-    host = args.host.lower().strip()
-    rr_type = args.type.upper().strip()
-    data = args.data.strip()
+class RRCommand:
+    def __init__(self, host: str = "127.0.0.1", port: int = 6379, dbid: int = 0):
+        self.host = str(host)
+        self.port = int(port)
+        self.dbid = int(dbid)
+        self.conn: redis.Connection = None
 
-    conn = yield redis.Connection(
-        host=config.get('redis', 'host'),
-        port=int(config.get('redis', 'port')),
-        dbid=int(config.get('redis', 'db'))
-    )
+        self.d = defer.Deferred()
 
-    hset = yield conn.hset(
-        'DDNS:ZONE:{}'.format(domain),
-        '{}:{}'.format(host, rr_type),
-        data
-    )
+    def run(self, command: callable, *args):
+        def exec():
+            d = self.connect()
+            d.addErrback(self.disconnect)
+            d.addCallback(command, *args)
+            d.addBoth(self.disconnect)
+            return d
 
-    if hset:
-        print 'Set successful'
-    else:
-        print 'Update successful'
+        reactor.callWhenRunning(exec)
+        reactor.run()
 
-    yield conn.disconnect()
+    @defer.inlineCallbacks
+    def connect(self):
+        self.conn = yield redis.Connection(host=self.host, port=self.port, dbid=self.dbid)
 
+    @defer.inlineCallbacks
+    def disconnect(self, result):
+        if self.conn:
+            yield self.conn.disconnect()
+        reactor.stop()
 
-@defer.inlineCallbacks
-def rr_get():
-    domain = args.zone.lower().strip()
-    host = args.host.lower().strip()
-    rr_type = args.type.upper().strip()
+    @defer.inlineCallbacks
+    def rr_set(self, conn, zone: str, host: str, rr_type: str, data: str):
+        hset = yield self.conn.hset(f"DDNS:ZONE:{zone}", f"{host}:{rr_type}", data)
+        if hset:
+            typer.echo(f"Record set successfully for {host}:{rr_type}: {data}")
+        else:
+            typer.echo(f"Record set failed for {host}:{rr_type}: {data}")
 
-    conn = yield redis.Connection(
-        host=config.get('redis', 'host'),
-        port=int(config.get('redis', 'port')),
-        dbid=int(config.get('redis', 'db'))
-    )
+    @defer.inlineCallbacks
+    def rr_get(self, conn, zone: str, host: str, rr_type: str):
+        data = yield self.conn.hget(f"DDNS:ZONE:{zone}", f"{host}:{rr_type}")
+        typer.echo(f"{host}.{zone}.\t{rr_type}\t{data}")
 
-    data = yield conn.hget(
-        'DDNS:ZONE:{}'.format(domain),
-        '{}:{}'.format(host, rr_type)
-    )
+    @defer.inlineCallbacks
+    def rr_delete(self, conn, zone: str, host: str, rr_type: str):
+        hdel = yield self.conn.hdel(f"DDNS:ZONE:{zone}", f"{host}:{rr_type}")
+        if hdel:
+            typer.echo(f"Record delete successfully for {host}:{rr_type}")
+        else:
+            typer.echo(f"Record delete failed for {host}:{rr_type}")
 
-    print '{}.{}.\t{}\t{}'.format(host, domain, rr_type, data)
-
-    yield conn.disconnect()
-
-
-@defer.inlineCallbacks
-def rr_list():
-    domain = args.zone.lower().strip()
-
-    conn = yield redis.Connection(
-        host=config.get('redis', 'host'),
-        port=int(config.get('redis', 'port')),
-        dbid=int(config.get('redis', 'db'))
-    )
-
-    zone_rrs = yield conn.hgetall('DDNS:ZONE:{}'.format(domain))
-
-    zone_hosts = ['{}\t{}\t{}'.format(*(key.split(':') + [value])) for key, value in six.iteritems(zone_rrs)]
-    zone_hosts.sort()
-
-    print '\n'.join(zone_hosts)
-
-    yield conn.disconnect()
+    @defer.inlineCallbacks
+    def rr_list(self, conn, zone: str):
+        zone_rr_list = yield self.conn.hgetall(f"DDNS:ZONE:{zone}")
+        typer.echo("Got all records")
+        typer.echo(f"Zone: {zone}")
+        typer.echo("\n".join(sorted([
+            "{}\t{}\t{}".format(*(key.split(":") + [value]))
+            for key, value in zone_rr_list.items()
+        ])))
 
 
-def main():
-    cmd_method = rr_set
-    if args.list:
-        cmd_method = rr_list
-    elif not args.data:
-        cmd_method = rr_get
-    cmd_method().addCallback(lambda ignore: reactor.stop())
+class RRType(enum.StrEnum):
+    A = "A"
+
+
+def to_lower(value: str):
+    return value.lower()
+
+
+@cli.command(name="set")
+def rr_set(
+        zone: Annotated[str, typer.Option(parser=to_lower)],
+        host: Annotated[str, typer.Option(parser=to_lower)],
+        rr_type: Annotated[RRType, typer.Option(case_sensitive=False)],
+        data: Annotated[str, typer.Option()],
+):
+    rr_cmd = RRCommand()
+    rr_cmd.run(rr_cmd.rr_set, zone, host, rr_type, data)
+
+
+@cli.command(name="get")
+def rr_get(
+        zone: Annotated[str, typer.Option(parser=to_lower)],
+        host: Annotated[str, typer.Option(parser=to_lower)],
+        rr_type: Annotated[RRType, typer.Option(case_sensitive=False)],
+):
+    rr_cmd = RRCommand()
+    rr_cmd.run(rr_cmd.rr_get, zone, host, rr_type)
+
+
+@cli.command(name="delete")
+def rr_delete(
+        zone: Annotated[str, typer.Option(parser=to_lower)],
+        host: Annotated[str, typer.Option(parser=to_lower)],
+        rr_type: Annotated[RRType, typer.Option(case_sensitive=False)],
+):
+    rr_cmd = RRCommand()
+    rr_cmd.run(rr_cmd.rr_delete, zone, host, rr_type)
+
+
+@cli.command(name="list")
+def rr_list(zone: Annotated[str, typer.Option(parser=to_lower)]):
+    rr_cmd = RRCommand()
+    rr_cmd.run(rr_cmd.rr_list, zone)
+
 
 if __name__ == '__main__':
-    reactor.callWhenRunning(main)
-    reactor.run()
+    cli()

@@ -1,24 +1,26 @@
+import pathlib
+import tomllib
+
 import txredisapi
 from twisted.application import service, internet
 from twisted.names import dns
-from ConfigParser import ConfigParser
 
-from ddns.protocol import DDNSFactory
+from txddns.protocol import DDNSFactory
 
 
 def create_application():
-    _application = service.Application('ddns')
-    _collection = service.IServiceCollection(application)
+    _application = service.Application("ddns")
+    _collection = service.IServiceCollection(_application)
 
-    config = ConfigParser()
-    config.read('ddns.ini')
+    config = tomllib.loads(pathlib.Path("ddns.toml").read_text())
 
-    dns_port = int(config.get('dns', 'port') or 53)
+    dns_port = int(config.get("dns", {}).get("port") or 53)
+    redis_config = config.get("redis", {})
 
     redis_client = txredisapi.lazyConnectionPool(
-        host=config.get('redis', 'host'),
-        port=config.get('redis', 'port'),
-        dbid=config.get('redis', 'db')
+        host=str(redis_config.get("host", "127.0.0.1")),
+        port=int(redis_config.get("port", 6379)),
+        dbid=int(redis_config.get("db", 0)),
     )
 
     ddns_factory = DDNSFactory(redis_client)
@@ -27,5 +29,6 @@ def create_application():
     internet.UDPServer(dns_port, dns.DNSDatagramProtocol(ddns_factory)).setServiceParent(_collection)
 
     return _application
+
 
 application = create_application()

@@ -1,7 +1,7 @@
 from twisted.names import cache
 from twisted.names.server import DNSServerFactory
 
-from ddns.client import DynamicResolver
+from txddns.client import DynamicResolver
 
 
 class DDNSFactory(DNSServerFactory):

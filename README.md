@@ -12,4 +12,3 @@ Provides an easy to use DDNS server, using various protocols.
 
 * HTTP - REST API for User and Domain management
 * DNS
-
